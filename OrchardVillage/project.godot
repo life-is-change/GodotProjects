@@ -40,3 +40,11 @@ orbit_right={
 "deadzone": 0.2,
 "events": [Object(InputEventKey,"physical_keycode":69)]
 }
+interact={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":70)]
+}
+inventory={
+"deadzone": 0.2,
+"events": [Object(InputEventKey,"physical_keycode":66)]
+}

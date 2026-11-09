@@ -33,3 +33,11 @@ New-Item -ItemType Directory -Force build/web | Out-Null
 保留 `build/web` 下同批生成的 HTML、JS、WASM 和 PCK 等文件。用上面的 HTTP 服务打开游戏。
 
 [Godot 4.6 Web 导出文档](https://docs.godotengine.org/en/4.6/tutorials/export/exporting_for_web.html)
+
+## 药水商店 · Windows 版
+
+从广场走到东北侧标有 RENOVATION 的房屋正门，按 F 或点屏幕下方提示。新档从 150 金币、60/100 生命开始。花 100 金币改造后，店门会出现条纹雨棚、招牌和商人。靠近商人按 F 对话，每瓶生命药水 20 金币。按 B 或点右上状态栏打开背包，使用药水恢复 30 点生命，最多恢复到 100。按 Esc 或点击「关闭」退出菜单。
+
+交易和使用药水后会自动写入 `user://orchard_progress.json`。Windows 默认路径是 `%APPDATA%\Godot\app_userdata\Orchard Village\orchard_progress.json`。六栋房屋各有稳定的 `building_id` 元数据，存档以该 ID 记录改造状态。
+
+现有 `build/web` 包含药水商店版的单线程 HTML5 导出。将整个目录部署到平台同源静态路径，例如 `/games/orchard-village/`，再用 iframe 加载该路径的 `index.html`。服务器为 WASM 返回 `application/wasm`。浏览器存档保存在 IndexedDB 中，随浏览器和站点来源区分。Web 包内附带 Noto Sans SC 字体许可证。

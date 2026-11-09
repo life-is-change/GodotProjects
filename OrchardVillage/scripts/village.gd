@@ -1,5 +1,7 @@
 extends Node3D
 
+const SHOP_HOUSE := preload("res://scripts/shop_house.gd")
+
 var materials := {}
 
 func _ready() -> void:
@@ -20,12 +22,12 @@ func _ready() -> void:
 		collider(self, Vector3(0.4, 3, 34), Vector3(side * 18.8, 1.4, 0))
 		collider(self, Vector3(38, 3, 0.4), Vector3(0, 1.4, side * 16.8))
 
-	house(Vector3(-5.1, 0, -6), 0.0, "#eac68d", "#a35542")
-	house(Vector3(4.5, 0, -5.8), 0.0, "#f2deb0", "#a95942")
-	house(Vector3(10.8, 0, -6.8), 0.0, "#dcb483", "#76654c")
-	house(Vector3(-9.7, 0, 5.6), PI, "#ead4a2", "#687e75")
-	house(Vector3(-4.4, 0, 7.5), PI, "#e9bc8a", "#9a584b")
-	house(Vector3(6.2, 0, 6.8), PI, "#f0d5a5", "#81704d")
+	house("north_cottage", Vector3(-5.1, 0, -6), 0.0, "#eac68d", "#a35542")
+	house("crossroads_house", Vector3(4.5, 0, -5.8), 0.0, "#f2deb0", "#a95942")
+	house("east_cottage", Vector3(10.8, 0, -6.8), 0.0, "#dcb483", "#76654c")
+	house("west_cottage", Vector3(-9.7, 0, 5.6), PI, "#ead4a2", "#687e75")
+	house("south_cottage", Vector3(-4.4, 0, 7.5), PI, "#e9bc8a", "#9a584b")
+	house("orchard_cottage", Vector3(6.2, 0, 6.8), PI, "#f0d5a5", "#81704d")
 
 	var rng := RandomNumberGenerator.new()
 	rng.seed = 312
@@ -82,8 +84,10 @@ func collider(parent: Node3D, dimensions: Vector3, point: Vector3) -> void:
 	body.add_child(shape)
 	parent.add_child(body)
 
-func house(point: Vector3, yaw: float, walls: String, roof: String) -> void:
-	var home := Node3D.new()
+func house(building_id: String, point: Vector3, yaw: float, walls: String, roof: String) -> void:
+	var home: Node3D = SHOP_HOUSE.new() if building_id == "crossroads_house" else Node3D.new()
+	home.name = building_id
+	home.set_meta("building_id", building_id)
 	home.position = point
 	home.rotation.y = yaw
 	$Buildings.add_child(home)
@@ -106,6 +110,9 @@ func house(point: Vector3, yaw: float, walls: String, roof: String) -> void:
 	box(home, Vector3(0, 0.07, 1.96), Vector3(1.0, 0.14, 0.44), "#a0957e")
 	box(home, Vector3(-0.81, 3.03, -0.73), Vector3(0.42, 1.1, 0.44), "#956553")
 	box(home, Vector3(-0.81, 3.60, -0.73), Vector3(0.52, 0.12, 0.54), "#765347")
+
+	if home is SHOP_HOUSE:
+		$ShopLoop.register_house(home)
 
 func tree(point: Vector3, factor: float, green: String) -> void:
 	box(self, point + Vector3.UP * 0.66 * factor, Vector3(0.32, 1.32, 0.34) * factor, "#795639")
