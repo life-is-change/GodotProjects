@@ -51,7 +51,8 @@ func run() -> void:
 	for building in buildings.get_children():
 		ids[building.get_meta("building_id", "")] = true
 	check(ids.size() == 6 and not ids.has(""), "All six buildings have unique IDs")
-	check(shop.state.coins == 150 and shop.state.health == 60, "New player defaults")
+	check(shop.state.coins == 150 and shop.state.health == 100, "New player defaults")
+	shop.state.take_damage(40)
 	check(shop.shop_house.get_node_or_null("Merchant") == null, "Merchant absent before renovation")
 	await key(KEY_F)
 	check(not shop.panel.visible, "F from plaza does not open interaction")

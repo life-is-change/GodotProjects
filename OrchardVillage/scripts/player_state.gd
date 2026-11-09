@@ -6,7 +6,7 @@ const POTION_PRICE := 20
 const POTION_HEAL := 30
 
 var coins := 150
-var health := 60
+var health := MAX_HEALTH
 var potions := 0
 var shops: Array[String] = []
 var save_path: String
@@ -52,9 +52,20 @@ func buy_potion() -> bool:
 	return coins >= POTION_PRICE and commit(coins - POTION_PRICE, health, potions + 1, shops)
 
 func use_potion() -> bool:
-	if potions == 0 or health >= MAX_HEALTH:
+	if potions == 0 or health == 0 or health >= MAX_HEALTH:
 		return false
 	return commit(coins, mini(MAX_HEALTH, health + POTION_HEAL), potions - 1, shops)
+
+func take_damage(amount: int) -> void:
+	health = maxi(0, health - amount)
+
+func restore_health() -> void:
+	health = MAX_HEALTH
+	commit(coins, health, potions, shops)
+
+func add_coins(amount: int) -> void:
+	coins = mini(2147483647, coins + amount)
+	commit(coins, health, potions, shops)
 
 func commit(next_coins: int, next_health: int, next_potions: int, next_shops: Array[String]) -> bool:
 	if load_error:

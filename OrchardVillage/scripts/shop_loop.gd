@@ -28,7 +28,7 @@ func register_house(house: Node3D) -> void:
 
 func _process(_delta: float) -> void:
 	var target := nearby_target()
-	prompt.visible = not panel.visible and not target.is_empty()
+	prompt.visible = state.health > 0 and not panel.visible and not target.is_empty()
 	if prompt.visible:
 		prompt.text = "按 F 交互 · 改造房屋" if target == "house" else "按 F 交互 · 商人"
 
@@ -53,6 +53,8 @@ func nearby_target() -> String:
 	return "merchant" if shop_house.merchant != null else "house"
 
 func _input(event: InputEvent) -> void:
+	if state.health == 0:
+		return
 	if event.is_action_pressed("inventory"):
 		toggle_inventory()
 		get_viewport().set_input_as_handled()
@@ -65,6 +67,8 @@ func _input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 func show_menu(next_mode: String) -> void:
+	if state.health == 0:
+		return
 	mode = next_mode
 	feedback.text = "存档无法读取，本次不会覆盖它。" if state.load_error else ""
 	match mode:

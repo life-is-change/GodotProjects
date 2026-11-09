@@ -3,6 +3,7 @@ extends CharacterBody3D
 const SPEED := 4.8
 var stride := 0.0
 var movement_locked := false
+var facing := Vector3.ZERO
 
 func _physics_process(delta: float) -> void:
 	var camera := get_viewport().get_camera_3d()
@@ -13,6 +14,8 @@ func _physics_process(delta: float) -> void:
 	var back := camera.global_basis.z
 	back.y = 0.0
 	var direction := right * axes.x + back.normalized() * axes.y
+	if direction.length_squared() > 0.01:
+		facing = direction.normalized()
 	velocity.x = direction.x * SPEED
 	velocity.z = direction.z * SPEED
 	velocity.y -= 18.0 * delta

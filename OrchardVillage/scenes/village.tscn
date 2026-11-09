@@ -6,6 +6,8 @@
 
 [ext_resource type="Script" path="res://scripts/shop_loop.gd" id="4"]
 
+[ext_resource type="Script" path="res://scripts/combat_loop.gd" id="5"]
+
 [node name="Village" type="Node3D"]
 script = ExtResource("1")
 
@@ -64,8 +66,11 @@ text = "Orchard Village"
 [node name="Controls" type="Label" parent="HUD/Card/Margin/Rows"]
 theme_override_colors/font_color = Color(0.80, 0.88, 0.80, 1)
 theme_override_font_sizes/font_size = 14
-text = "WASD  Walk     Q / E  Turn     Wheel  Zoom"
+text = "WASD  Walk     Q / E  Turn     Wheel  Zoom     Space  Attack"
 
 [node name="ShopLoop" type="CanvasLayer" parent="."]
 layer = 2
 script = ExtResource("4")
+
+[node name="Combat" type="Node3D" parent="."]
+script = ExtResource("5")
